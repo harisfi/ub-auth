@@ -22,22 +22,11 @@ class AuthController extends Controller
             curl_setopt($initlogin, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($initlogin, CURLOPT_SSL_VERIFYPEER, false);
             $execlogin = curl_exec($initlogin);
-            $json = json_decode($execlogin);
 
-            if ($json->AUTHORITY->PASSWD == 1){
-                $response = [
-                    'message' => 'success',
-                    'data' => base64_encode($execlogin)
-                ];
-                return response()->json($response, 200);
-            } else {
-                $response = [
-                    'message' => 'error',
-                    'data' => $json->errormsg
-                ];
-                return response()->json($response, 200);
-            }
-
+            return response()->json([
+                'message' => 'success',
+                'data' => base64_encode($execlogin)
+            ], 200);
         } catch (Exception $ex) {
             report($ex);
             return response()->json([
